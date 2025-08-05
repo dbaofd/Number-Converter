@@ -34,12 +34,12 @@ app.UseHttpsRedirection();
 // Use CORS
 app.UseCors("AllowGitHubPages");
 
-app.MapPost("/convert-currency", (ConvertRequest request) =>
+app.MapGet("/convert-currency", (string number) =>
 {
     try
     {
         var converter = new NumberConverter.NumberConverter();
-        var result = converter.ConvertToCurrency(request.Number);
+        var result = converter.ConvertToCurrency(number);
         return Results.Ok(new ConvertResponse(result));
     }
     catch (Exception ex)
