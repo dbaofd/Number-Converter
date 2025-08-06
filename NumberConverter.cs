@@ -351,7 +351,7 @@ namespace NumberConverter
             string integerPartWords = ConvertNumToWords(integerPart);
             if (integerPartWords == "Surpass maximum")
             {
-                return "Number too large, maximum number supported is 999,999,999,999,999,999.99"
+                return "Number too large, maximum number supported is 999,999,999,999,999,999.99";
             }
 
             // Add dollar/dollars
