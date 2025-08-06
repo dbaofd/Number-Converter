@@ -17,7 +17,7 @@ namespace NumberConverter
             "SIXTY", "SEVENTY", "EIGHTY", "NINETY"
         };
 
-        // Handel numbers with two digits.
+        // Handle numbers with two digits.
         public string TenDigits(long number)
         {
             if (number.ToString().Length != 2)
@@ -33,7 +33,7 @@ namespace NumberConverter
             {
                 int tenDigit = int.Parse(number.ToString().Substring(0, 1));
                 int oneDigit = int.Parse(number.ToString().Substring(1, 1));
-                if (oneDigit != 0)
+                if (oneDigit != 0)// Then add - to connect ten and one, e.g., Thirty-Four
                 {
                     return Tens[tenDigit] + "-" + OneToNineteen[oneDigit];
                 }
@@ -44,6 +44,7 @@ namespace NumberConverter
             }
         }
 
+        // Handle numbers with three digits.
         public string HundredDigits(long number)
         {
             if (number.ToString().Length != 3)
@@ -58,6 +59,7 @@ namespace NumberConverter
             return words;
         }
 
+        // Handle numbers with 4 to 6 digits.
         public string ThousandDigits(long number)
         {
             int length = number.ToString().Length;
@@ -89,6 +91,7 @@ namespace NumberConverter
             return words;
         }
 
+        // Handle numbers with 7 to 9 digits.
         public string MillionDigits(long number)
         {
             int length = number.ToString().Length;
@@ -120,6 +123,7 @@ namespace NumberConverter
             return words;
         }
 
+        // Handle numbers with 10 to 12 digits.
         public string BillionDigits(long number)
         {
             int length = number.ToString().Length;
@@ -151,6 +155,7 @@ namespace NumberConverter
             return words;
         }
 
+        // Handle numbers with 13 to 15 digits.
         public string TrillionDigits(long number)
         {
             int length = number.ToString().Length;
@@ -182,6 +187,7 @@ namespace NumberConverter
             return words;
         }
 
+        // Handle numbers with 16 to 18 digits.
         public string QuadrillionDigits(long number)
         {
             int length = number.ToString().Length;
@@ -224,7 +230,7 @@ namespace NumberConverter
                 if (secondPartNum != 0)
                 {
                     words = " AND " + OneToNineteen[secondPartNum];
-                }
+                }// else do nothing
             }
             else if (digitNumber == 2)
             {
@@ -300,12 +306,13 @@ namespace NumberConverter
             }
             else
             {
-                throw new ArgumentException("Number too large, maximum number supported is 999,999,999,999,999,999.99");
+                words = "Surpass maximum";
             }
 
             return words;
         }
 
+        // Handle decimal part, perfom round up when decimal part has more than 2 digits.
         private long RoundupDecimalPart(string decimalPart)
         {
             int digitNumber = decimalPart.Length;
@@ -330,7 +337,7 @@ namespace NumberConverter
 
             string[] parts = num.Split('.');
             long integerPart = long.Parse(parts[0]);
-            string decimalPart = parts[1];
+            string decimalPart = parts[1]; // No need to convert decimalPart, if we do, if decimal part os 0006, then it will be 6. 
 
             // Handle rounding up for 0.995+ cases
             if (decimalPart.Length >= 3 && long.Parse(decimalPart.Substring(0, 3)) >= 995)
@@ -342,16 +349,20 @@ namespace NumberConverter
             long decimalPartNum = RoundupDecimalPart(decimalPart);
             string decimalPartWords = ConvertNumToWords(decimalPartNum);
             string integerPartWords = ConvertNumToWords(integerPart);
+            if (integerPartWords == "Surpass maximum")
+            {
+                return "Number too large, maximum number supported is 999,999,999,999,999,999.99"
+            }
 
             // Add dollar/dollars
-            if (integerPart == 1)
-            {
-                integerPartWords += " DOLLAR";
-            }
-            else if (integerPart > 1)
-            {
-                integerPartWords += " DOLLARS";
-            }
+                if (integerPart == 1)
+                {
+                    integerPartWords += " DOLLAR";
+                }
+                else if (integerPart > 1)
+                {
+                    integerPartWords += " DOLLARS";
+                }
 
             // Add cent/cents
             if (decimalPartNum == 1)
