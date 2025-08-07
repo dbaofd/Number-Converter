@@ -316,15 +316,19 @@ namespace NumberConverter
         private long RoundupDecimalPart(string decimalPart)
         {
             int digitNumber = decimalPart.Length;
-            if (digitNumber > 2)
+            if (digitNumber == 0)// for edge case like 5., then decimal part is empty. 
             {
-                long validPart = long.Parse(decimalPart.Substring(0, 2));
-                if (int.Parse(decimalPart.Substring(2, 1)) >= 5)
-                {
-                    validPart += 1;
-                }
-                return validPart;
+                decimalPart = "0";
             }
+            if (digitNumber > 2)
+                {
+                    long validPart = long.Parse(decimalPart.Substring(0, 2));
+                    if (int.Parse(decimalPart.Substring(2, 1)) >= 5)
+                    {
+                        validPart += 1;
+                    }
+                    return validPart;
+                }
             return long.Parse(decimalPart);
         }
 
@@ -336,6 +340,15 @@ namespace NumberConverter
             }
 
             string[] parts = num.Split('.');
+            if (parts[0].Length > 18)// no need to proceed, as long.Parse() may have error.
+            {
+                return "Number too large, maximum number supported is 999,999,999,999,999,999.99";
+            }
+
+            if (parts[1].Length == 1)// if decimal part has one digit, like 4, we need to add 0 after 4, so we have 40, later when we parse decimal part to long, we have 40 cents, otherwise we have 4 cents.
+            {
+                parts[1] = parts[1] + "0";
+            }
             long integerPart = long.Parse(parts[0]);
             string decimalPart = parts[1]; // No need to convert decimalPart, if we do, if decimal part os 0006, then it will be 6. 
 

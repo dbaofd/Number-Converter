@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add CORS services
+// Add CORS services for my github.io to request.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowGitHubPages", policy =>

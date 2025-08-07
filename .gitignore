@@ -1,3 +1,5 @@
 # Build artifacts
 bin/
 obj/
+WebApplication1.Tests/bin/
+WebApplication1.Tests/obj/
